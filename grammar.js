@@ -362,19 +362,8 @@ module.exports = grammar({
       ),
 
     str_literal: ($) =>
-      seq(
-        '"',
-        repeat(
-          choice(
-            /[^"\\]+/,
-            /\\[\\"/abfnrtv0]/,
-            /\\x[0-9a-fA-F]{2}/,
-            /\\u[0-9a-fA-F]{4}/,
-            /\\U[0-9a-fA-F]{8}/,
-            /\\[0-7]{1,3}/,
-          ),
-        ),
-        '"',
+      token(
+        /"([^"\\]|\\[\\"/abfnrtv0]|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|\\[0-7]{1,3})*"/
       ),
 
     long_str_literal: ($) => seq('@"', repeat(/[^"]/), '"'),
