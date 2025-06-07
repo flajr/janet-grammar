@@ -8,7 +8,6 @@ module.exports = grammar({
     [$._form, $.function_def],
     [$._form, $.var],
     [$.loop_construct],
-    [$.control_flow],
   ],
 
   rules: {
@@ -363,20 +362,26 @@ module.exports = grammar({
       ),
 
     str_literal: ($) =>
-      token(prec(1,
-        /"([^"\\]|\\[\\"/abfnrtv0]|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|\\[0-7]{1,3})*"/
-      )),
+      token(
+        prec(
+          1,
+          /"([^"\\]|\\[\\"/abfnrtv0]|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|\\[0-7]{1,3})*"/,
+        ),
+      ),
 
     long_str_literal: ($) => token(prec(1, seq('@"', /([^"])*/, '"'))),
 
     buffer_literal: ($) =>
-      token(prec(1,
-        seq(
-          "@`",
-          /([^`\\]|\\[\\`/abfnrtv0]|\\x[0-9a-fA-F]{2}|\\[0-7]{1,3})*/,
-          "`",
+      token(
+        prec(
+          1,
+          seq(
+            "@`",
+            /([^`\\]|\\[\\`/abfnrtv0]|\\x[0-9a-fA-F]{2}|\\[0-7]{1,3})*/,
+            "`",
+          ),
         ),
-      )),
+      ),
 
     long_buffer_literal: ($) => token(prec(1, "@``````")),
 
